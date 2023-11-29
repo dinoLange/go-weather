@@ -5,6 +5,8 @@ import (
 	"log"
 	"net/http"
 
+	"go-weather/internal/service"
+
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
 )
@@ -20,9 +22,10 @@ func (s *Server) RegisterRoutes() http.Handler {
 }
 
 func (s *Server) HelloWorldHandler(w http.ResponseWriter, r *http.Request) {
-	resp := make(map[string]string)
-	resp["message"] = "Hello World"
 
+	forecast, err := service.TryApi()
+	resp := make(map[string]string)
+	resp["message"] = forecast.Resolution
 	jsonResp, err := json.Marshal(resp)
 	if err != nil {
 		log.Fatalf("error handling JSON marshal. Err: %v", err)
