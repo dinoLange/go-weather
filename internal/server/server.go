@@ -7,12 +7,9 @@ import (
 	"strconv"
 	"time"
 
-	"go-weather/internal/database"
-
 	_ "github.com/joho/godotenv/autoload"
+	"go-weather/internal/database"
 )
-
-var port = 8080
 
 type Server struct {
 	port int
