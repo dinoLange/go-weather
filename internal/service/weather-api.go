@@ -7,7 +7,7 @@ import (
 	"net/http"
 )
 
-func TryApi() (*Forecast, error) {
+func LoadThreeDayForeCast() (*Forecast, error) {
 	client := &http.Client{
 		CheckRedirect: func(req *http.Request, via []*http.Request) error {
 			return http.ErrUseLastResponse
@@ -44,7 +44,6 @@ func TryApi() (*Forecast, error) {
 		fmt.Println("Error unmarshalling JSON:", err)
 		return nil, err
 	}
-	fmt.Println(forecastData.Resolution)
 
 	return &forecastData, nil
 }

@@ -2,10 +2,9 @@ package server
 
 import (
 	"encoding/json"
+	"go-weather/internal/service"
 	"log"
 	"net/http"
-
-	"go-weather/internal/service"
 
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
@@ -16,16 +15,14 @@ func (s *Server) RegisterRoutes() http.Handler {
 	r.Use(middleware.Logger)
 
 	r.Get("/", s.HelloWorldHandler)
-	r.Get("/health", s.healthHandler)
+	r.Get("/weather", s.weatherHandler)
 
 	return r
 }
 
 func (s *Server) HelloWorldHandler(w http.ResponseWriter, r *http.Request) {
-
-	forecast, err := service.TryApi()
 	resp := make(map[string]string)
-	resp["message"] = forecast.Resolution
+	resp["message"] = "Hi"
 	jsonResp, err := json.Marshal(resp)
 	if err != nil {
 		log.Fatalf("error handling JSON marshal. Err: %v", err)
@@ -34,7 +31,7 @@ func (s *Server) HelloWorldHandler(w http.ResponseWriter, r *http.Request) {
 	_, _ = w.Write(jsonResp)
 }
 
-func (s *Server) healthHandler(w http.ResponseWriter, r *http.Request) {
-	jsonResp, _ := json.Marshal(s.db.Health())
-	_, _ = w.Write(jsonResp)
+func (s *Server) weatherHandler(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "text/html")
+	service.RenderThreeDayForecast(w)
 }

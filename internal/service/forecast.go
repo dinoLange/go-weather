@@ -1,6 +1,8 @@
 package service
 
-import "time"
+import (
+	"time"
+)
 
 type Forecast struct {
 	Lat           float64   `json:"lat"`
