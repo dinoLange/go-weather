@@ -14,6 +14,8 @@ func (s *Server) RegisterRoutes() http.Handler {
 	r := chi.NewRouter()
 	r.Use(middleware.Logger)
 
+	r.Handle("/static/*", http.StripPrefix("/static/", http.FileServer(http.Dir("static"))))
+
 	r.Get("/", s.HelloWorldHandler)
 	r.Get("/weather", s.weatherHandler)
 
@@ -33,5 +35,5 @@ func (s *Server) HelloWorldHandler(w http.ResponseWriter, r *http.Request) {
 
 func (s *Server) weatherHandler(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "text/html")
-	service.RenderThreeDayForecast(w)
+	service.RenderLineChart(w)
 }

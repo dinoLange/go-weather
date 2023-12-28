@@ -28,7 +28,12 @@ func LoadThreeDayForeCast() (*Forecast, error) {
 		fmt.Println("Error calling endpoint:", err)
 		return nil, err
 	}
-	defer response.Body.Close()
+	defer func(Body io.ReadCloser) {
+		err := Body.Close()
+		if err != nil {
+
+		}
+	}(response.Body)
 
 	body, err := io.ReadAll(response.Body)
 
