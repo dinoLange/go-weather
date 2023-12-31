@@ -24,11 +24,11 @@ func (s *Server) weatherForecastHandler(w http.ResponseWriter, r *http.Request) 
 
 func (s *Server) currentWeatherHandler(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "text/html")
-	forecast, err := service.LoadThreeDayForeCast() //LOAD Current weather instead
+	currentWeather, err := service.LoadCurrentWeather()
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
-	data := forecast.GenerateTemperatureMax()
+	data := currentWeather.GenerateTemperatureMax()
 	columns := []view.Column{{Type: "date", Name: "Datum"}, {Type: "number", Name: "Temperatur"}}
 	renderLineChart(w, r, data, columns, "Aktuelles Wetter Lübeck")
 }
