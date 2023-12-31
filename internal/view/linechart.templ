@@ -1,0 +1,57 @@
+package view
+
+script graphLineChart(rows []RowValue, columns []Column, title string, width int, height int) {
+  htmx.onLoad(function(content) {
+      graph(rows, columns, title, width, height)
+    })
+
+  function graph(rows, columns, title, width, height) {
+    google.charts.load('current', {'packages':['corechart']});
+
+    // Set a callback to run when the Google Visualization API is loaded.
+    google.charts.setOnLoadCallback(() => drawChart(rows, columns, title, width, height) );
+
+
+    // Callback that creates and populates a data table,
+    // instantiates the pie chart, passes in the data and
+    // draws it.
+    function drawChart(rows, columns, title, width, height) {
+      // Create the data table.
+
+      var data = new google.visualization.DataTable();
+      for(const column of columns) {
+        data.addColumn(column.Type, column.Name)
+      }
+      let rowArray = []
+      for(const row of rows) {
+          rowArray.push([new Date(row.Time), row.Value])
+      }
+      
+      data.addRows(rowArray);
+      if (!title) {
+        title = 'Default title'
+      }
+      if (!width) {
+        width = '400'
+      }
+      if (!height) {
+        height = '300'
+      }
+      const options = {
+          title: title,
+          width: width,
+          height: height
+      }
+
+      var chart = new google.visualization.LineChart(document.getElementById('line_chart'));
+      chart.draw(data, options);
+    }
+  }
+
+}
+
+templ LineChart(rows []RowValue, columns []Column, title string, width int, height int) {
+	@graphLineChart(rows, columns, title, width, height)
+	<div id="line_chart"></div>
+	//<button onclick={ graphLineChart(rows, columns, title, width, height) } >Click</button>
+}

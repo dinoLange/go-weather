@@ -1,0 +1,17 @@
+package view
+
+templ Base() {
+    <html>
+    <head>
+      <script src="https://unpkg.com/htmx.org@1.9.10"></script>
+      <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    </head>
+    <body>
+        <h1> Wetter </h1>
+        <button hx-get="/weatherforecast" hx-target="#chartPlaceholder">Wettervorhersage</button>
+        <button hx-get="/currentweather" hx-target="#chartPlaceholder">Live Wetter</button>
+        <div id="chartPlaceholder">
+        </div>
+    </body>
+    </html>
+}

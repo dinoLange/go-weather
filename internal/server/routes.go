@@ -1,9 +1,6 @@
 package server
 
 import (
-	"encoding/json"
-	"go-weather/internal/service"
-	"log"
 	"net/http"
 
 	"github.com/go-chi/chi/v5"
@@ -14,26 +11,9 @@ func (s *Server) RegisterRoutes() http.Handler {
 	r := chi.NewRouter()
 	r.Use(middleware.Logger)
 
-	r.Handle("/static/*", http.StripPrefix("/static/", http.FileServer(http.Dir("static"))))
-
-	r.Get("/", s.HelloWorldHandler)
-	r.Get("/weather", s.weatherHandler)
+	r.Get("/", s.BaseHandler)
+	r.Get("/weatherforecast", s.weatherForecastHandler)
+	r.Get("/currentweather", s.currentWeatherHandler)
 
 	return r
-}
-
-func (s *Server) HelloWorldHandler(w http.ResponseWriter, r *http.Request) {
-	resp := make(map[string]string)
-	resp["message"] = "Hi"
-	jsonResp, err := json.Marshal(resp)
-	if err != nil {
-		log.Fatalf("error handling JSON marshal. Err: %v", err)
-	}
-
-	_, _ = w.Write(jsonResp)
-}
-
-func (s *Server) weatherHandler(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Type", "text/html")
-	service.RenderLineChart(w)
 }

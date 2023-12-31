@@ -1,6 +1,7 @@
 package service
 
 import (
+	"go-weather/internal/view"
 	"time"
 )
 
@@ -76,4 +77,15 @@ type Forecast struct {
 			} `json:"evening"`
 		} `json:"timeOfDay"`
 	} `json:"data"`
+}
+
+func (forecast *Forecast) GenerateTemperatureMax() []view.RowValue {
+	items := make([]view.RowValue, 0)
+	for _, data := range forecast.Data {
+		items = append(items, view.RowValue{Time: data.DateTime, Value: data.TempMax})
+		//	items = append(items, data.TimeOfDay.Morning.TempMax)
+		//	items = append(items, data.TimeOfDay.Afternoon.TempMax)
+		//	items = append(items, data.TimeOfDay.Evening.TempMax)
+	}
+	return items
 }
