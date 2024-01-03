@@ -2,6 +2,7 @@ package service
 
 import (
 	"go-weather/internal/view"
+	"time"
 )
 
 type CurrentWeather struct {
@@ -11,11 +12,11 @@ type CurrentWeather struct {
 	Lon       float64
 	Ele       int
 	Data      []struct {
-		DateTime             string
+		DateTime             time.Time
 		Temp                 float64
 		TempMean             float64
 		TempMin              float64
-		TempMax              float64
+		TempMax              float64 `json:"tempMax,omitempty"`
 		DewpointMean         float64
 		PrecSum              float64
 		Temp5CmMin           float64
@@ -30,10 +31,7 @@ type CurrentWeather struct {
 func (currentWeather *CurrentWeather) GenerateTemperatureMax() []view.RowValue {
 	items := make([]view.RowValue, 0)
 	for _, data := range currentWeather.Data {
-		items = append(items, view.RowValue{Time: data.DateTime, Value: data.TempMax})
-		//	items = append(items, data.TimeOfDay.Morning.TempMax)
-		//	items = append(items, data.TimeOfDay.Afternoon.TempMax)
-		//	items = append(items, data.TimeOfDay.Evening.TempMax)
+		items = append(items, view.RowValue{Time: data.DateTime.String(), Value: data.TempMax})
 	}
 	return items
 }

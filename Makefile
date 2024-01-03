@@ -12,6 +12,10 @@ run:
 	@templ generate
 	@go run cmd/api/main.go
 
+generate:
+	@templ generate
+
+
 # Create DB container
 docker-run:
 	@if docker compose up 2>/dev/null; then \

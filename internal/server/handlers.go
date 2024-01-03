@@ -34,5 +34,5 @@ func (s *Server) currentWeatherHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func renderLineChart(w http.ResponseWriter, r *http.Request, data []view.RowValue, columns []view.Column, title string) {
-	view.LineChart(data, columns, title, 400, 500).Render(r.Context(), w)
+	view.LineChart(data, columns, title, 800, 500).Render(r.Context(), w)
 }

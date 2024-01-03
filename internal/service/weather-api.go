@@ -5,6 +5,8 @@ import (
 	"fmt"
 	"io"
 	"net/http"
+	"strings"
+	"time"
 )
 
 var apiUrl = "https://api.kachelmannwetter.com/v02/"
@@ -21,6 +23,20 @@ func LoadCurrentWeather() (*CurrentWeather, error) {
 	}
 
 	return &data, nil
+}
+
+func (c *CustomTime) UnmarshalJSON(b []byte) error {
+	value := strings.Trim(string(b), `"`) //get rid of "
+	if value == "" || value == "null" {
+		return nil
+	}
+
+	t, err := time.Parse("2006-01-02", value) //parse time
+	if err != nil {
+		return err
+	}
+	*c = CustomTime(t) //set result using the pointer
+	return nil
 }
 
 func LoadThreeDayForeCast() (*Forecast, error) {
